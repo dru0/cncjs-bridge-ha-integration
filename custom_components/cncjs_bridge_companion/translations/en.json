@@ -1,0 +1,12 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "CNCjs Bridge Companion",
+        "description": "Select the existing status sensor created by the Raspberry Pi bridge.",
+        "data": {"source_entity": "Bridge status entity"}
+      }
+    },
+    "abort": {"already_configured": "This source entity is already configured."}
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "domain": "cncjs_bridge_companion",
+  "name": "CNCjs Bridge Companion",
+  "version": "0.1.0",
+  "config_flow": true,
+  "documentation": "https://github.com/dru0/cncjs-bridge-ha-integration",
+  "issue_tracker": "https://github.com/dru0/cncjs-bridge-ha-integration/issues",
+  "codeowners": [
+    "@dru0"
+  ],
+  "dependencies": [],
+  "integration_type": "service",
+  "iot_class": "local_push",
+  "requirements": []
+}

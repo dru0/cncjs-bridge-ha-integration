@@ -1,0 +1,12 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "CNCjs Bridge Companion",
+        "description": "Wybierz istniejącą encję statusu tworzoną przez bridge na Raspberry Pi.",
+        "data": {"source_entity": "Encja statusu bridge"}
+      }
+    },
+    "abort": {"already_configured": "Ta encja została już skonfigurowana."}
+  }
+}
