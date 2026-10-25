@@ -1,7 +1,7 @@
 {
   "domain": "cncjs_bridge_companion",
   "name": "CNCjs Bridge Companion",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "config_flow": true,
   "documentation": "https://github.com/dru0/cncjs-bridge-ha-integration",
   "codeowners": [

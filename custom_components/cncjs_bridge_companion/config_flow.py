@@ -48,5 +48,6 @@ class CNCjsBridgeOptionsFlow(config_entries.OptionsFlow):
             step_id="init",
             data_schema=vol.Schema({
                 vol.Required(CONF_MEDIA_DIR, default=current): str,
+                vol.Optional("serial_port", default=self.config_entry.options.get("serial_port", "")): str,
             }),
         )

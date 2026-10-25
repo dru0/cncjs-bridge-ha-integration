@@ -9,7 +9,7 @@ from homeassistant.helpers import config_validation as cv
 from .const import DOMAIN, CONF_SOURCE_ENTITY, CONF_MEDIA_DIR, DEFAULT_MEDIA_DIR
 
 _LOGGER = logging.getLogger(__name__)
-PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR]
+PLATFORMS = [Platform.SENSOR, Platform.BINARY_SENSOR, Platform.SELECT, Platform.BUTTON]
 EXTS = {".nc", ".gcode", ".gc", ".tap"}
 
 
@@ -108,6 +108,10 @@ async def async_setup(hass, config):
 
 
 async def async_setup_entry(hass, entry):
+    from .manager import GCodeManager
+    manager = GCodeManager(hass, entry, _root)
+    hass.data.setdefault(DOMAIN, {})[entry.entry_id] = manager
+    await manager.async_refresh()
     # Ensure service exists on HA versions that initialize config entries directly.
     await async_setup(hass, {})
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
@@ -115,4 +119,7 @@ async def async_setup_entry(hass, entry):
 
 
 async def async_unload_entry(hass, entry):
-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    unloaded = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
+    if unloaded:
+        hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
+    return unloaded

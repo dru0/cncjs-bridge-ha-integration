@@ -34,7 +34,7 @@ class CNCjsClient:
         token=await self._token()
         client=socketio.AsyncClient(reconnection=False,request_timeout=10)
         try:
-            await asyncio.wait_for(client.connect(self.url,transports=['polling'],socketio_path='socket.io',headers={'Authorization':'Bearer '+token},query_string='token='+token),timeout=15)
+            await asyncio.wait_for(client.connect(self.url + '?token=' + __import__('urllib.parse', fromlist=['quote']).quote(token, safe=''),transports=['polling'],socketio_path='socket.io',headers={'Authorization':'Bearer '+token}),timeout=15)
             # CNCjs command event: command(commandName, port, ...args)
             # Serial port is retrieved from the source bridge attributes when possible.
             await client.emit('command',(command,*args))
