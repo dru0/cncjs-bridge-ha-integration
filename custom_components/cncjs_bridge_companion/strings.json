@@ -3,10 +3,37 @@
     "step": {
       "user": {
         "title": "CNCjs Bridge Companion",
-        "description": "Wybierz istniejącą encję statusu tworzoną przez bridge na Raspberry Pi.",
-        "data": {"source_entity": "Encja statusu bridge"}
+        "description": "Wybierz źródło statusu i sposób uwierzytelniania CNCjs.",
+        "data": {
+          "source_entity": "Encja statusu bridge",
+          "cncjs_url": "Adres CNCjs",
+          "media_directory": "Katalog G-code (np. /media/laser lub /config/www/media/laser)",
+          "auth_method": "Sposób logowania"
+        }
+      },
+      "auth": {
+        "title": "Dane dostępu CNCjs",
+        "description": "Podaj token albo login i hasło — zgodnie z poprzednim wyborem.",
+        "data": {
+          "cncjs_token": "Token CNCjs",
+          "username": "Login CNCjs",
+          "password": "Hasło CNCjs"
+        }
       }
     },
-    "abort": {"already_configured": "Ta encja została już skonfigurowana."}
+    "abort": {
+      "already_configured": "Ta encja została już skonfigurowana."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Katalog G-code",
+        "description": "Podaj ścieżkę do katalogu z plikami G-code. Obsługiwane są /media oraz /config/www/media. Katalog www jest publicznie dostępny przez /local/.",
+        "data": {
+          "media_directory": "Katalog G-code"
+        }
+      }
+    }
   }
 }

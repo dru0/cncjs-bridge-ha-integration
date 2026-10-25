@@ -1,3 +1,13 @@
 DOMAIN = "cncjs_bridge_companion"
 CONF_SOURCE_ENTITY = "source_entity"
 DEFAULT_SOURCE_ENTITY = "sensor.cncjs_status"
+CONF_URL = "cncjs_url"
+CONF_USERNAME = "username"
+CONF_PASSWORD = "password"
+CONF_MEDIA_DIR = "media_directory"
+DEFAULT_MEDIA_DIR = "laser"
+
+CONF_AUTH_METHOD = "auth_method"
+CONF_TOKEN = "cncjs_token"
+AUTH_TOKEN = "token"
+AUTH_PASSWORD = "password"

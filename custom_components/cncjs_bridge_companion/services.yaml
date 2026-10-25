@@ -1,0 +1,25 @@
+control:
+  name: CNCjs - sterowanie i pliki
+  description: Lista lokalnych plików G-code lub eksperymentalne sterowanie CNCjs.
+  fields:
+    action:
+      required: true
+      example: list
+      selector:
+        select:
+          options:
+            - list
+            - load
+            - start
+            - pause
+            - resume
+            - stop
+    filename:
+      required: false
+      example: test.nc
+      selector:
+        text:
+    confirm:
+      required: false
+      selector:
+        boolean:
