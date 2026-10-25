@@ -52,10 +52,6 @@ async def _handle(hass, call):
     attrs = state.attributes if state else {}
     if not state or attrs.get("socket_connected") is not True or attrs.get("serial_connected") is not True:
         raise HomeAssistantError("Bridge nie potwierdza połączenia CNCjs i USB")
-    port = attrs.get("port") or attrs.get("serial_port")
-    if not port:
-        raise HomeAssistantError("Brak port/serial_port w atrybutach bridge; polecenia CNCjs nie są dostępne")
-
     if action == "load":
         if state.state in ("running", "paused", "hold"):
             raise HomeAssistantError("Nie można ładować pliku podczas zadania")
@@ -71,8 +67,8 @@ async def _handle(hass, call):
                 raise HomeAssistantError("Plik nie istnieje lub przekracza 5 MB")
             return file.read_text(encoding="utf-8-sig")
         code = await hass.async_add_executor_job(read_file)
-        from .client import CNCjsClient
-        await CNCjsClient(hass, entry).command("gcode:load", port, name, code, {})
+        from .bridge_client import BridgeClient
+        await BridgeClient(hass, entry).command("load", filename=name, gcode=code)
         return {"result": "sent", "filename": name}
 
     if action == "start" and call.data.get("confirm") is not True:
@@ -83,10 +79,10 @@ async def _handle(hass, call):
         raise HomeAssistantError("Pauza wymaga statusu running")
     if action == "resume" and state.state not in ("paused", "hold"):
         raise HomeAssistantError("Wznów wymaga statusu paused/hold")
-    from .client import CNCjsClient
-    commands = {"start": ("gcode:start", port), "pause": ("gcode:pause", port),
-                "resume": ("gcode:resume", port), "stop": ("gcode:stop", port, {"force": True})}
-    await CNCjsClient(hass, entry).command(*commands[action])
+    if action in ("start", "resume"):
+        raise HomeAssistantError("Zdalny Start/Wznów zablokowany do czasu testów bezpieczeństwa")
+    from .bridge_client import BridgeClient
+    await BridgeClient(hass, entry).command(action)
     return {"result": "sent", "action": action}
 
 

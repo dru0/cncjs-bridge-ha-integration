@@ -31,15 +31,6 @@ class GCodeManager:
     def source(self):
         return self.hass.states.get(self.entry.data[CONF_SOURCE_ENTITY])
 
-    def port(self):
-        state = self.source()
-        if state is None or state.attributes.get("socket_connected") is not True or state.attributes.get("serial_connected") is not True:
-            raise HomeAssistantError("Brak potwierdzonego połączenia CNCjs i USB")
-        port = state.attributes.get("port") or state.attributes.get("serial_port") or self.entry.options.get("serial_port", "")
-        if not port:
-            raise HomeAssistantError("Nie znam portu USB. Ustaw serial_port w opcjach integracji, np. /dev/ttyUSB0")
-        return port
-
     async def async_load(self):
         await self.async_refresh()
         name = self.selected
@@ -57,8 +48,8 @@ class GCodeManager:
                 raise HomeAssistantError("Plik nie istnieje lub przekracza 5 MB")
             return file.read_text(encoding="utf-8-sig")
         code = await self.hass.async_add_executor_job(read)
-        from .client import CNCjsClient
-        await CNCjsClient(self.hass, self.entry).command("gcode:load", self.port(), name, code, {})
+        from .bridge_client import BridgeClient
+        await BridgeClient(self.hass, self.entry).command("load", filename=name, gcode=code)
         self.last_loaded = name  # sent, not a controller acknowledgment
         self.notify()
 
@@ -74,7 +65,5 @@ class GCodeManager:
             raise HomeAssistantError("Pauza wymaga stanu running")
         if action not in ("pause", "stop"):
             raise HomeAssistantError("Nieznane polecenie")
-        from .client import CNCjsClient
-        port = self.port()
-        args = ("gcode:stop", port, {"force": True}) if action == "stop" else ("gcode:pause", port)
-        await CNCjsClient(self.hass, self.entry).command(*args)
+        from .bridge_client import BridgeClient
+        await BridgeClient(self.hass, self.entry).command(action)
