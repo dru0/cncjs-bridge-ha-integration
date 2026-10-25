@@ -1,4 +1,4 @@
-# CNCjs Bridge HA Integration — v0.1.0
+# CNCjs Bridge Companion v0.2.3
 
 Osobna integracja Home Assistant, współpracująca z istniejącym `bridge.js`.
 Nie zastępuje usługi Node.js ani sterowania LED WS2812.
